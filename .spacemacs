@@ -460,6 +460,7 @@ you should place your code here."
   ;; include Bernt Hansen's key-binding
   (require 'org-mode-key-bindings)
 
+
   (with-eval-after-load 'org
     ;; here goes your Org config :)
 
@@ -469,8 +470,11 @@ you should place your code here."
     ;; disable line numbers in org files due to slowness
     (add-hook 'org-mode-hook 'spacemacs/toggle-line-numbers-off 'append)
 
-    ;; disable indent on startup
-    (setq org-startup-indented nil)
+    ;; set path of plantuml.js
+    (setq org-plantuml-jar-path "/usr/local/Cellar/plantuml/8041/plantuml.8041.jar")
+    
+    (add-to-list 'load-path "~/path/to/org/protocol/")
+    (require 'org-protocol)
 
     ;; include Bernt Hansens GTD implementaiton
     ;;(add-to-list 'org-modules 'org-habit)
@@ -484,6 +488,22 @@ you should place your code here."
     ;;                          "~/Dropbox/org/someday.org"
     ;;                          "~/Dropbox/org/references.org"
     ;;                          "~/Dropbox/org/isa.org"))
+
+
+    ;; (setq my-org-mode-packages
+    ;;       '(
+    ;;         (org-protocol :location built-in)
+    ;;         )
+    ;;       )
+    ;; ;; TODO is this needed and the above?
+    ;; (defun my-org-mode/init-org-protocol ()
+    ;;   (use-package org-protocol
+    ;;     :defer t
+    ;;     :commands (org-protocol-capture org-protocol-create) ;; this adds autoloads
+    ;;     :init
+    ;;     (progn
+    ;;       (evil-leader/set-key-for-mode 'org-mode
+    ;;         "mp" 'org-protocol-capture))))
 
     )
 

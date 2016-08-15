@@ -16,7 +16,7 @@
 ;;
 (if (boundp 'org-user-agenda-files)
     (setq org-agenda-files org-user-agenda-files)
-  (setq org-agenda-files (quote ("~/git/org"))))
+  (setq org-agenda-files (quote ("~/git/org" "~/git/master/master.org"))))
 
 
 ;;; Key bindings
@@ -81,7 +81,7 @@
 
 ;;; Adding New Tasks Quickly with Org Capture
 ;; Capture Templates
-(setq org-directory "~/git/org")
+(setq org-directory "~/git/org/")
 (setq org-default-notes-file "~/git/org/refile.org")
 
 
@@ -95,8 +95,12 @@
                "* %? :NOTE:\n%U\n%a\n" :clock-in t :clock-resume t)
               ("j" "Journal" entry (file+datetree "~/git/org/diary.org")
                "* %?\n%U\n" :clock-in t :clock-resume t)
+              ;;("w" "org-protocol" entry (file "~/git/org/refile.org")
+              ;; "* TODO Review %c\n%U\n" :immediate-finish t)
               ("w" "org-protocol" entry (file "~/git/org/refile.org")
-               "* TODO Review %c\n%U\n" :immediate-finish t)
+               "* %?%c :NOTE::LINK: \n%U\n #+BEGIN_QUOTE\n%i\n#+END_QUOTE\n" :clock-in t :clock-resume t)
+              ("L" "org-protocol Link" entry (file "~/git/org/refile.org")
+               "* %?[[%:link][%:description]] :NOTE::LINK: \n%U\n" :clock-in t :clock-resume t)
               ("m" "Meeting" entry (file "~/git/org/refile.org")
                "* MEETING with %? :MEETING:\n%U" :clock-in t :clock-resume t)
               ("p" "Phone call" entry (file "~/git/org/refile.org")
@@ -117,24 +121,24 @@
 
 ;;; Refiling Tasks
 ;; Refile Setup
-; Targets include this file and any file contributing to the agenda - up to 9 levels deep
+                                        ; Targets include this file and any file contributing to the agenda - up to 9 levels deep
 (setq org-refile-targets (quote ((nil :maxlevel . 9)
                                  (org-agenda-files :maxlevel . 9))))
 
-; Use full outline paths for refile targets
+                                        ; Use full outline paths for refile targets
 (setq org-refile-use-outline-path (quote file))
 
-; Targets complete directly
+                                        ; Targets complete directly
 (setq org-outline-path-complete-in-steps nil)
 
-; Allow refile to create parent tasks with confirmation
+                                        ; Allow refile to create parent tasks with confirmation
 (setq org-refile-allow-creating-parent-nodes (quote confirm))
 
-; Use the current window for indirect buffer display
+                                        ; Use the current window for indirect buffer display
 (setq org-indirect-buffer-display 'current-window)
 
 ;;;; Refile settings
-; Exclude DONE state tasks from refile targets
+                                        ; Exclude DONE state tasks from refile targets
 (defun bh/verify-refile-target ()
   "Exclude todo keywords with a done state from refile targets"
   (not (member (nth 2 (org-heading-components)) org-done-keywords)))
@@ -161,7 +165,7 @@
                 (org-agenda-sorting-strategy
                  '(todo-state-down effort-up category-keep))))
               (" " "Agenda"
-               ((agenda "" nil)
+               ((agenda "")
                 (tags "REFILE"
                       ((org-agenda-overriding-header "Tasks to Refile")
                        (org-tags-match-list-sublevels nil)))
@@ -315,7 +319,7 @@ as the default task."
     ;;
     (save-restriction
       (widen)
-      ; Find the tags on the current task
+                                        ; Find the tags on the current task
       (if (and (equal major-mode 'org-mode) (not (org-before-first-heading-p)) (eq arg 4))
           (org-clock-in '(16))
         (bh/clock-in-organization-task-as-default)))))
@@ -429,7 +433,7 @@ A prefix arg forces clock in of the default task."
 
 ;;; Tags
 ;; Tags
-                                        ; Tags with fast selection keys
+;; Tags with fast selection keys
 (setq org-tag-alist (quote ((:startgroup)
                             ("@errand" . ?e)
                             ("@office" . ?o)
@@ -448,10 +452,10 @@ A prefix arg forces clock in of the default task."
                             ("CANCELLED" . ?c)
                             ("FLAGGED" . ??))))
 
-                                        ; Allow setting single tags without the menu
-(setq org-fast-tag-selection-single-key (quote expert))
-
-                                        ; For tag searches ignore tasks with scheduled and deadline dates
+;; Allow setting single tags without the menu
+;;(setq org-fast-tag-selection-single-key (quote expert))
+(setq org-fast-tag-selection-single-key nil)
+;; For tag searches ignore tasks with scheduled and deadline dates
 (setq org-agenda-tags-todo-honor-ignore-options t)
 
 
@@ -1570,11 +1574,11 @@ Late deadlines first, then scheduled, then non-late deadlines"
 
 ;; Org Task Structure and Presentation
 ;; Controlling display of leading stars on headlines
-(setq org-hide-leading-stars nil)
+(setq org-hide-leading-stars t)
 
 
 ;; org-indent mode
-;;(setq org-startup-indented t)
+(setq org-startup-indented t)
 
 
 ;; Handling blank lines
@@ -1635,14 +1639,14 @@ Late deadlines first, then scheduled, then non-late deadlines"
 
 ;; Habit Tracking - error?
 ;; Enable habit tracking (and a bunch of other modules)
-(setq org-modules (quote (org-bbdb
+(setq org-modules (quote (org-habit
+                          org-bbdb
                           org-bibtex
                           org-crypt
                           org-gnus
                           org-id
                           org-info
                           org-jsinfo
-                          org-habit
                           org-inlinetask
                           org-irc
                           org-mew
