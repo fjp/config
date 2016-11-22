@@ -848,7 +848,7 @@ Skip project and sub-project tasks, habits, and loose non-project tasks."
 ; Inline images in HTML instead of producting links to the image
 (setq org-html-inline-images t)
 ; Do not use sub or superscripts - I currently don't need this functionality in my documents
-(setq org-export-with-sub-superscripts nil)
+;;(setq org-export-with-sub-superscripts nil)
 ; Use org.css from the norang website for export document stylesheets
 (setq org-html-head-extra "<link rel=\"stylesheet\" href=\"http://doc.norang.ca/org.css\" type=\"text/css\" />")
 (setq org-html-head-include-default-style nil)
@@ -1040,9 +1040,9 @@ Skip project and sub-project tasks, habits, and loose non-project tasks."
 (setq org-latex-listings t)
 
 ;; Export HTML without XML header
-(setq org-html-xml-declaration (quote (("html" . "")
-                                       ("was-html" . "<?xml version=\"1.0\" encoding=\"%s\"?>")
-                                       ("php" . "<?php echo \"<?xml version=\\\"1.0\\\" encoding=\\\"%s\\\" ?>\"; ?>"))))
+;;(setq org-html-xml-declaration (quote (("html" . "")
+;;                                       ("was-html" . "<?xml version=\"1.0\" encoding=\"%s\"?>")
+;;                                       ("php" . "<?php echo \"<?xml version=\\\"1.0\\\" encoding=\\\"%s\\\" ?>\"; ?>"))))
 
 
 ;; Allow binding variables on export without confirmation
@@ -1646,7 +1646,7 @@ Late deadlines first, then scheduled, then non-late deadlines"
                           org-gnus
                           org-id
                           org-info
-                          org-jsinfo
+                          ;;org-jsinfo
                           org-inlinetask
                           org-irc
                           org-mew
@@ -1769,8 +1769,8 @@ Late deadlines first, then scheduled, then non-late deadlines"
       (bh/insert-inactive-timestamp))))
 
 (add-hook 'org-insert-heading-hook 'bh/insert-heading-inactive-timestamp 'append)
-;; prevent the timestamps from being exported in documents
-(setq org-export-with-timestamps nil)
+;; (prevent) the timestamps from being exported in documents
+(setq org-export-with-timestamps t)
 
 ;; Return follows links
 (setq org-return-follows-link t)

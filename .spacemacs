@@ -25,20 +25,27 @@ values."
      ;; ----------------------------------------------------------------
      auto-completion
      better-defaults
+     bibtex
      c-c++
      chrome
      emacs-lisp
      erc
-     latex
+     ;;latex
+     (latex :variables
+            ;;latex-build-command "LaTeX"
+            latex-enable-auto-fill t
+            latex-enable-folding t)
      git
      gnus
      markdown
-     org
+     ;;org
+     (org :variables
+          org-enable-github-support t)
      osx
      rcirc
-      (shell :variables
-             shell-default-height 30
-             shell-default-position 'bottom)
+     (shell :variables
+            shell-default-height 30
+            shell-default-position 'bottom)
      spell-checking
      spotify
      syntax-checking
@@ -50,7 +57,9 @@ values."
    ;; wrapped in a layer. If you need some configuration for these
    ;; packages, then consider creating a layer. You can also put the
    ;; configuration in `dotspacemacs/user-config'.
-   dotspacemacs-additional-packages '(w3m
+   dotspacemacs-additional-packages '(doc-view
+                                      minimap
+                                      w3m
                                       bbdb
                                       )
    ;; A list of packages and/or extensions that will not be install and loaded.
@@ -279,6 +288,14 @@ you should place your code here."
   ;; set global line numbers
   (setq-default dotspacemacs-line-numbers t)
 
+
+  ;; latex
+  (add-hook 'doc-view-mode-hook 'auto-revert-mode)
+
+  ;; minimap
+  (setq minimap-major-modes '(prog-mode))
+  (setq minimap-window-location 'right)
+
   ;; git
   ;; display magit status buffer in fullscreen
   (defun dotspacemacs/user-init ()
@@ -454,17 +471,35 @@ you should place your code here."
                     "#mixxx"))))
 
 
+  ;; deutscher Kalender:
+  (setq calendar-week-start-day 1
+        calendar-day-name-array
+        ["Sonntag" "Montag" "Dienstag" "Mittwoch"
+         "Donnerstag" "Freitag" "Samstag"]
+        calendar-month-name-array
+        ["Januar" "Februar" "März" "April" "Mai"
+         "Juni" "Juli" "August" "September"
+         "Oktober" "November" "Dezember"])
+
+
   (setq debug-on-error t)
   ;; org configuration
   (add-to-list 'auto-mode-alist '("\\.\\(org\\|org_archive\\|txt\\)$" . org-mode))
 
-  (push (expand-file-name "~/git/dotfiles/") load-path)
+  (push (expand-file-name "~/git/config/") load-path)
   ;; include Bernt Hansen's key-binding
   (require 'org-mode-key-bindings)
 
 
+  
+
   (with-eval-after-load 'org
     ;; here goes your Org config :)
+
+    (require 'org-docview)
+
+    ;; deutsch as export language
+    (setq org-export-default-language "de")
 
     ;; enable shift-select-mode in org-mode
     (setq org-support-shift-select t)
@@ -530,5 +565,4 @@ you should place your code here."
  '(ansi-term-color-vector
    [unspecified "#FFFFFF" "#d15120" "#5f9411" "#d2ad00" "#6b82a7" "#a66bab" "#6b82a7" "#505050"])
  '(fci-rule-character-color "#d9d9d9")
- '(fci-rule-color "#d9d9d9" t)
- '(ispell-program-name "/usr/local/bin/aspell"))
+ '(fci-rule-color "#d9d9d9"))
